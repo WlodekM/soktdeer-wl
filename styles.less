@@ -9,6 +9,7 @@ body {
 		background: white;
 		display: flex;
 		justify-content: space-between;
+		border-bottom: gray inset 2px;
 	}
 	.main {
 		flex-grow: 1;
@@ -45,15 +46,33 @@ body {
 	display: flex;
 }
 
-.reply {
-	color: #000000aa
-}
-
-.attachment {
-	max-height: 25vw;
-	max-width: 25vw;
-	width: auto;
-	height: auto;
+.message {
+	.message-container {
+		display: flex;
+		img {
+			height: 5em;
+			aspect-ratio: 1/1;
+			border: gray inset 2px;
+		}
+		.message-content-container {
+			flex-grow: 1;
+			.reply {
+				color: #000000aa
+			}
+			.message-header {
+				width: 100%;
+			}
+			p, h1, h2, h3, h4, h5, h6 {
+				margin: 0;
+			}
+			.attachment {
+				max-height: 25vw;
+				max-width: 25vw;
+				width: auto;
+				height: auto;
+			}
+		}
+	}
 }
 
 #messageInput {
@@ -62,12 +81,6 @@ body {
 
 .messageInput.disabled {
     display: none;
-}
-
-.message {
-	p, h1, h2, h3, h4, h5, h6 {
-		margin: 0;
-	}
 }
 
 .message-header {
