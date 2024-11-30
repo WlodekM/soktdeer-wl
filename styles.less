@@ -3,13 +3,20 @@ body {
     /* why */
     margin: 0;
 	height: 100vh;
-}
-
-.main {
-	height: 100%;
-	width: 100%;
-	line-break: anywhere;
-	word-break: break-all;
+	display: flex;
+	flex-direction: column;
+	.topbar {
+		background: white;
+		display: flex;
+		justify-content: space-between;
+	}
+	.main {
+		flex-grow: 1;
+		width: 100%;
+		overflow: auto;
+		line-break: anywhere;
+		word-break: break-all;
+	}
 }
 
 .channel {
@@ -22,14 +29,6 @@ body {
 
 .messages {
 	flex-grow: 1;
-}
-
-.topbar {
-	background: white;
-	position: sticky;
-	top: 0;
-	display: flex;
-	justify-content: space-between;
 }
 
 .topbar.hidden {
