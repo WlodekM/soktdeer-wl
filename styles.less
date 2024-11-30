@@ -24,6 +24,18 @@ body {
 	flex-grow: 1;
 }
 
+.topbar {
+	background: white;
+	position: sticky;
+	top: 0;
+	display: flex;
+	justify-content: space-between;
+}
+
+.topbar.hidden {
+	display: none;
+}
+
 .messageInput {
 	background: white;
 	position: sticky;
@@ -53,23 +65,25 @@ body {
     display: none;
 }
 
+.message {
+	p, h1, h2, h3, h4, h5, h6 {
+		margin: 0;
+	}
+}
+
 .message-header {
 	display: flex;
 	justify-content: space-between;
+	.username {
+		font-size: 1.3em;
+	}
+	.action-buttons {
+		display: none;
+	}
 }
-
-.action-buttons {
-	display: none;
-}
-
 .message:hover {
 	background: #0004;
-}
-
-.message:hover .action-buttons {
-	display: block;
-}
-
-.message-header .username {
-	font-size: 1.3em;
+	.action-buttons {
+		display: block;
+	}
 }

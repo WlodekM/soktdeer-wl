@@ -1,5 +1,8 @@
 import { shiftHeld } from "../../lib/key.js"
 import html from "../../lib/htmlbuilder.js"
+import markdwonits from "https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/+esm"
+
+const md = markdwonits()
 
 async function fetchJSON(url, opts) {
     let resp = await fetch(url, opts);
@@ -10,12 +13,7 @@ function scrollToBottomOfElement(element) {
     element.scrollTo(0, element.scrollHeight);
 }
 
-function handleNewPost() {
-    console.debug('posting of the poster', post)
-    let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
-    createMessage(post.data)
-    if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
-}
+let handleNewPost;
 
 function deHTML(t) {
     t = t.replaceAll("<", "&lt;")
@@ -30,6 +28,13 @@ function getUsernameHTML(msg) {
 export function onload() {
     const msgArea = document.getElementById("messages");
 
+    handleNewPost = function handleNewPost(post) {
+        console.debug('posting of the poster', post)
+        let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
+        createMessage(post.data)
+        if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
+    }
+
     let replies = []
 
     function rednerReplyThingy() {
@@ -41,7 +46,7 @@ export function onload() {
                 html('div')
                     .class('reply')
                     .child('span')
-                        .html(getUsernameHTML(r) + ": " + deHTML(r.content))
+                        .html(getUsernameHTML(r) + ": " + deHTML(String(r.content).slice(0, 50)))
                         .up()
                     .child('button')
                         .text('x')
@@ -62,7 +67,7 @@ export function onload() {
             .class('message')
             .for(msg.replies, r => html('div')
                 .class('reply')
-                .html(`→ ${getUsernameHTML(r)}: ${deHTML(r.content)}`))
+                .html(`→ ${getUsernameHTML(r)}: ${deHTML(String(r.content).slice(0, 50))}`))
             .child('div')
                 .class('message-header')
                 .child('span')
@@ -83,7 +88,7 @@ export function onload() {
                 .up()
             .child('span')
                 .class('post-content')
-                .text(msg?.content)
+                .html(md.render(msg?.content))
             .child('div')
                 .for(msg.attachments, a => html('img').class('attachment').attr('src', a))
                 .up()

@@ -8,6 +8,7 @@ export function onload() {
         ev.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
+        document.getElementById('topbar').classList.remove('hidden')
         try {
             await stores.sdlib.login(username, password)
         } catch (error) {

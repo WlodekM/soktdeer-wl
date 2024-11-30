@@ -6,9 +6,18 @@
     <title>soktdeer wl client</title>
     <!-- original name, ik -->
     <script type="module" src="main.js"></script>
-    <link rel="stylesheet" href="shitstylse.css">
+    <link rel="stylesheet/less" type="text/css" href="styles.less" />
+    <script src="https://cdn.jsdelivr.net/npm/less" ></script>
 </head>
 <body>
+    <div class="topbar hidden" id="topbar">
+        SD-WL
+        <div>
+            <button onclick="window.pages.goToPage('main')">home</button>
+            <button onclick="window.pages.goToPage('settings')" disabled>settings</button>
+            <button onclick="throw new Error('A')" disabled>log out</button>
+        </div>
+    </div>
     <div class="main">
 
     </div>
