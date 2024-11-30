@@ -1,0 +1,61 @@
+/* i have no idea what im doing so */
+body {
+    /* why */
+    margin: 0;
+	height: 100vh;
+}
+
+.main {
+	height: 100%;
+	width: 100%;
+	line-break: anywhere;
+	word-break: break-all;
+}
+
+.channel {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow: auto;
+}
+
+.messages {
+	flex-grow: 1;
+}
+
+.messageInput {
+	background: white;
+	position: sticky;
+	bottom: 0;
+	display: flex;
+}
+
+#messageInput {
+	flex-grow: 1;
+}
+
+.messageInput.disabled {
+    display: none;
+}
+
+.message-header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.action-buttons {
+	display: none;
+}
+
+.message:hover {
+	background: #0004;
+}
+
+.message:hover .action-buttons {
+	display: block;
+}
+
+.message-header .username {
+	font-size: 1.3em;
+}
