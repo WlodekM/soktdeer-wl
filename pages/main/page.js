@@ -17,6 +17,16 @@ function handleNewPost() {
     if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
 }
 
+function deHTML(t) {
+    t = t.replaceAll("<", "&lt;")
+    t = t.replaceAll("&", "&gt;")
+    return t
+}
+
+function getUsernameHTML(msg) {
+    return msg.author.display_name ? `${deHTML(msg.author.display_name)} (<code>${deHTML(msg.author.username)}</code>)`: deHTML(r.author.username)
+}
+
 export function onload() {
     const msgArea = document.getElementById("messages");
 
@@ -31,8 +41,7 @@ export function onload() {
                 html('div')
                     .class('reply')
                     .child('span')
-                        .text((r.author.display_name ? `${r.author.display_name} (${r.author.username})` : r.author.username)
-                        + ": " +r.content)
+                        .html(getUsernameHTML(r) + ": " + deHTML(r.content))
                         .up()
                     .child('button')
                         .text('x')
@@ -53,12 +62,12 @@ export function onload() {
             .class('message')
             .for(msg.replies, r => html('div')
                 .class('reply')
-                .text(`→ ${r.author.display_name ? `${r.author.display_name} (${r.author.username})`: r.author.username}: ${r.content}`))
+                .html(`→ ${getUsernameHTML(r)}: ${deHTML(r.content)}`))
             .child('div')
                 .class('message-header')
                 .child('span')
                     .class('username')
-                    .text(msg.author.display_name ? `${msg.author.display_name} (${msg.author.username})` : msg.author.username)
+                    .html(getUsernameHTML(msg))
                     .up()
                 .child('div')
                     .class('action-buttons')
