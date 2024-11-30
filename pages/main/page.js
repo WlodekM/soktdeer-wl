@@ -13,9 +13,40 @@ function scrollToBottomOfElement(element) {
 export function onload() {
     const msgArea = document.getElementById("messages");
 
+    let replies = []
+
+    function rednerReplyThingy() {
+		let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
+        let elem = html('div')
+            .class('replies')
+            .attr('id', 'replies')
+            .for(replies, (r, i) => 
+                html('div')
+                    .class('reply')
+                    .child('span')
+                        .text((r.author.display_name ? `${r.author.display_name} (${r.author.username})` : r.author.username)
+                        + ": " +r.content)
+                        .up()
+                    .child('button')
+                        .text('x')
+                        .ev('click', e => {
+                            replies.splice(i, 1);
+                            rednerReplyThingy();
+                        })
+                        .up()
+            );
+        if(document.getElementById('repliesContainer').firstChild)
+            document.getElementById('repliesContainer').firstChild.remove()
+        document.getElementById('repliesContainer').prepend(elem);
+		if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
+    }
+
     function createMessage(msg) {
         let elem = html('div')
             .class('message')
+            .for(msg.replies, r => html('div')
+                .class('reply')
+                .text(`→ ${r.author.display_name ? `${r.author.display_name} (${r.author.username})`: r.author.username}: ${r.content}`))
             .child('div')
                 .class('message-header')
                 .child('span')
@@ -24,7 +55,14 @@ export function onload() {
                     .up()
                 .child('div')
                     .class('action-buttons')
-                    .child('button').text('reply').up()
+                    .child('button')
+                        .text('reply')
+                        .ev('click', e => {
+                            if(msg.length >= 3) return;
+                            replies.push(msg);
+                            rednerReplyThingy();
+                        })
+                        .up()
                     .up()
                 .up()
             .child('span')
@@ -56,9 +94,10 @@ export function onload() {
         stores.sdlib.ws.send(JSON.stringify({
             command: "post",
             content: msg,
-            replies: [],
+            replies: replies.map(p => p.id),
             attachments: []
         }))
+        replies = [];
         document.getElementById("messageInput").value = ""
     }
 

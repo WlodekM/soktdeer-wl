@@ -28,7 +28,14 @@ body {
 	background: white;
 	position: sticky;
 	bottom: 0;
+}
+
+.messageInputForm {
 	display: flex;
+}
+
+.reply {
+	color: #000000aa
 }
 
 #messageInput {
