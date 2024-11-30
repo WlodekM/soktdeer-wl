@@ -62,7 +62,13 @@ export function onload() {
 		if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
     }
 
-    function createMessage(msg) {
+    async function createMessage(msg) {
+        let types = [];
+        for (const attachment of msg.attachments) {
+            console.debug(attachment)
+            const resp = await fetch(attachment.toString());
+            types.push(resp.headers.get('content-type'))
+        }
         let elem = html('div')
             .class('message')
             .child('div')
@@ -97,9 +103,21 @@ export function onload() {
                         .class('post-content')
                         .html(md.render(msg?.content))
                     .child('div')
-                        .for(msg.attachments, a => {
-                            return html('img').class('attachment').attr('src', a)}
-                        )
+                        .for(msg.attachments, (a, i) => {
+                            if(types[i].startsWith('image')) {
+                                return html('img').class('attachment').attr('src', a)
+                            } else if (types[i].startsWith('video')) {
+                                return html('video')
+                                    .class('attachment')
+                                    .attr('controls', 1)
+                                    .child('source')
+                                        .attr('src', a)
+                                        .attr('type', types[i])
+                                        .up()
+                            } else {
+                                return html('a').attr('href', a).text(`Attachment ${i + 1} (${a})`)
+                            }
+                        })
                         .up()
                     .up()
                 .up()
