@@ -97,7 +97,9 @@ export function onload() {
                         .class('post-content')
                         .html(md.render(msg?.content))
                     .child('div')
-                        .for(msg.attachments, a => html('img').class('attachment').attr('src', a))
+                        .for(msg.attachments, a => {
+                            returnhtml('img').class('attachment').attr('src', a)}
+                        )
                         .up()
                     .up()
                 .up()
@@ -108,7 +110,7 @@ export function onload() {
     msgArea.innerHTML = "";
     // :+1:
 
-    for (const msg of window.stores.sdlib.messages.reverse()) {
+    for (const msg of window.stores.sdlib.messages) {
         createMessage(msg)
     }
     scrollToBottomOfElement(msgArea.parentElement);
