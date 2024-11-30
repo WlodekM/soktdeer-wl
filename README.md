@@ -15,3 +15,4 @@ A client for soktdeer
  - Adding attachments
  - PFPs
  - Settings page
+ - Token login & token saving

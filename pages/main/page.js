@@ -10,6 +10,13 @@ function scrollToBottomOfElement(element) {
     element.scrollTo(0, element.scrollHeight);
 }
 
+function handleNewPost() {
+    console.debug('posting of the poster', post)
+    let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
+    createMessage(post.data)
+    if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
+}
+
 export function onload() {
     const msgArea = document.getElementById("messages");
 
@@ -83,12 +90,7 @@ export function onload() {
     }
     scrollToBottomOfElement(msgArea.parentElement);
 
-    stores.sdlib.wsEvents.on("new_post", post => {
-        console.debug('posting of the poster', post)
-		let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
-        createMessage(post.data)
-		if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
-    })
+    stores.sdlib.wsEvents.on("new_post", handleNewPost)
 
     const submitBtn = document.getElementById("send")
 
@@ -113,4 +115,8 @@ export function onload() {
             if (!submitBtn.disabled) submitBtn.click();
         }
     })
+}
+
+export function onunload() {
+    stores.sdlib.wsEvents.off('new_post', handleNewPost)
 }
