@@ -38,6 +38,13 @@ body {
 	color: #000000aa
 }
 
+.attachment {
+	max-height: 25vw;
+	max-width: 25vw;
+	width: auto;
+	height: auto;
+}
+
 #messageInput {
 	flex-grow: 1;
 }

@@ -68,6 +68,9 @@ export function onload() {
             .child('span')
                 .class('post-content')
                 .text(msg?.content)
+            .child('div')
+                .for(msg.attachments, a => html('img').class('attachment').attr('src', a))
+                .up()
             .up()
         msgArea.appendChild(elem)
     }
