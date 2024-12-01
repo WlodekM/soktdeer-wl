@@ -20,5 +20,7 @@ window.stores.onChange = function (store, cb) {
     window.storesEvents[id] = {store, cb};
     return id;
 }
-window.sd = window.stores.sdlib
+const sd = window.sd = window.stores.sdlib
+sd.ws.onclose = () => pages.goToPage('login')
+sd.ws.onerror = () => pages.goToPage('login')
 pages.goToPage('login')
