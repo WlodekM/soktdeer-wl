@@ -20,6 +20,24 @@ body {
 	}
 }
 
+.jump {
+	position: fixed;
+	bottom: 2em;
+	width: 1em;
+	height: 1em;
+	padding: 0.2em;
+	margin: 1em;
+	background: white;
+	border: 2px ridge black;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0px 1px 5px #00000050;
+}
+.jump.shown {
+	display: block;
+}
+
 .channel {
 	flex-grow: 1;
 	display: flex;
@@ -28,8 +46,11 @@ body {
 	overflow: auto;
 }
 
-.messages {
-	flex-grow: 1;
+.messages-container {
+	overflow: auto;
+	.messages {
+		flex-grow: 1;
+	}
 }
 
 .topbar.hidden {
