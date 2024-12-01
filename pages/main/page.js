@@ -155,7 +155,7 @@ export async function onload() {
 
     msgArea.style.display = 'none'
 
-    for (const msg of window.stores.sdlib.messages.reverse()) {
+    for (const msg of window.stores.sdlib.messages) {
         createMessage(msg)
     }
     msgArea.style.display = 'block'

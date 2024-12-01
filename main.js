@@ -28,4 +28,6 @@ function onclose() {
 }
 sd.ws.onclose = onclose
 sd.ws.onerror = onclose
-pages.goToPage('login')
+document.addEventListener('DOMContentLoaded', () => {
+    pages.goToPage('login')
+})

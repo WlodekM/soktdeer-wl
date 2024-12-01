@@ -5,7 +5,7 @@ async function fetchJSON(url, opts) {
 
 export function onload() {
     if (localStorage.getItem('token')) {
-        window.stores.sdlib.ws.addEventListener('open', () => {
+        window.stores.sdlib.wsEvents.on('greet', () => {
             window.stores.sdlib.loginToken(localStorage.getItem('token'), localStorage.getItem('username'));
             pages.goToPage('main')
         })
