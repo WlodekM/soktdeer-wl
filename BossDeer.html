@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en-US"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html lang="en-US">
+    <head>
         <title>BossDeer</title>
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -110,31 +110,35 @@
         </style>
     </head>
     <body>
-        <div id="error-bar" class="hidden"><span onclick="closePopup();" class="text-clickable">Close</span> - <span id="error-text">Connecting...<span></span></span></div>
+        <div id="error-bar"><span onclick="closePopup();" class="text-clickable">Close</span> - <span id="error-text">Connecting...<span></div>
         <div class="scene">
-        <div id="loading" class="hidden"><center>Taking too long to load? Try <span onclick="logOut();" class="text-clickable">a full reset</span>.</center></div>
+        <div id="loading"><center>Taking too long to load? Try <span onclick="logOut();" class="text-clickable">a full reset</span>.</center></div>
         <div id="connection-lost" class="hidden"><center>Connection was lost.<br><span onclick="window.location.reload();" class="text-clickable">Reload</span>.</center></div>
         <div id="register-login" class="hidden"><center>
-            <input id="rl-username" placeholder="Username..." type="text" maxlength="20" value="wlodekm"><br>
-            <input id="rl-password" placeholder="Password..." type="password"><br>
-            <input id="rl-invitecode" placeholder="Invite code..." type="text" maxlength="16"><br>
+            <input id="rl-username" placeholder="Username..." type="text" maxlength=20></input><br>
+            <input id="rl-password" placeholder="Password..." type="password"></input><br>
+            <input id="rl-invitecode" placeholder="Invite code..." type="text" maxlength=16></input><br>
             <button onclick="logIn();">Log in</button> 
             <button onclick="register();">Register</button><br><br>
-            <small>(You only need to provide an invite code when registering.)<br>(Please ensure you have read the <a href="https://deer.meltland.dev/GUIDELINES.txt">GUIDELINES</a> (also provided below) before creating an account.)</small><br>
-             <embed class="rl-guidelines" type="text/plain" src="BossDeer_files/GUIDELINES.txt"><br> 
-            <small id="rl-version">1.1.1b - SOKTDEER-2024.11.30-18.13</small>
+            <small>(You only need to provide an invite code when registering.)<br>(Please ensure you have read the <a href="GUIDELINES.txt">GUIDELINES</a> (also provided below) before creating an account.)</small><br>
+             <embed class="rl-guidelines" type="text/plain" src="GUIDELINES.txt"><br> 
+            <small id="rl-version"></small>
         </center></div>
-        <div id="main-scene" class="">
+        <div id="main-scene" class="hidden">
+            <button id="ms-name" disabled>@...</button> | <button onclick="switchScene('main-config');">Settings</button> <button onclick="switchScene('main-inbox');">Inbox</button> <button id="ms-button-mod" class="hidden" onclick="switchScene('main-moderation');">Moderation</button><br>
+            <small id="ms-ulist">0 users online ()</small><br><br><center>
+            <button onclick="addAttachment();">+</button> <input id="ms-msg" maxlength=2000 onkeydown="if (event.keyCode == 13) {sendPost();}" placeholder="What's on your mind?" type="text"></input> <button id="ms-button-post" onclick="sendPost();">Post</button><br><small id="ms-details"></small></center><br>
+            <div id="ms-posts"></div>
         </div>
         <div id="main-config" class="hidden">
             <button onclick="switchScene('main-scene');">Return to Home</button><br>
             <h2>Profile</h2>
-            <input id="mc-display-name" placeholder="Display name..." type="text" maxlength="20"> <button onclick="setDisplayName();">Set display name</button><br>
-            <input id="mc-avatar" placeholder="Avatar URL..." type="text" maxlength="656"> <button onclick="setAvatar();">Set avatar URL</button>
+            <input id="mc-display-name" placeholder="Display name..." type="text" maxlength=20></input> <button onclick="setDisplayName();">Set display name</button><br>
+            <input id="mc-avatar" placeholder="Avatar URL..." type="text" maxlength=656></input> <button onclick="setAvatar();">Set avatar URL</button>
             <h2>Misc</h2>
             <button onclick="updateStg('moderation')">Toggle Moderation tab</button><br><br>
             <button onclick="logOut();">Log out</button><br>
-            <small id="mc-version">1.1.1b - SOKTDEER-2024.11.30-18.13</small>
+            <small id="mc-version"></small>
         </div>
         <div id="main-inbox" class="hidden">
             <button onclick="switchScene('main-scene');">Return to Home</button><br>
@@ -144,9 +148,9 @@
         <div id="main-moderation" class="hidden">
             <button onclick="switchScene('main-scene');">Return to Home</button><br>
             <h2>Ban</h2>
-            <input id="mm-username-ban" placeholder="Username..." type="text"><br>
-            <input id="mm-until-ban" type="datetime-local"><br>
-            <input id="mm-reason-ban" placeholder="Reason..." type="text"><br>
+            <input id="mm-username-ban" placeholder="Username..." type="text"></input><br>
+            <input id="mm-until-ban" type="datetime-local"></input><br>
+            <input id="mm-reason-ban" placeholder="Reason..." type="text"></input><br>
             <button onclick="ban();">Ban User</button>
             <h2>Invite code</h2>
             <span id="mm-invite-code"></span><br>
@@ -155,23 +159,23 @@
             <h2>Clear home</h2>
             <button onclick="clearHome();">Clear home</button>
             <h2>Forcekick</h2>
-            <input id="mm-username-forcekick" placeholder="Username..." type="text"><br>
+            <input id="mm-username-forcekick" placeholder="Username..." type="text"></input><br>
             <button onclick="forceKick();">Forcekick</button>
             <h2>Inbox</h2>
-            <input id="mm-content-inbox" placeholder="Message..." type="text" width="80"><br>
+            <input id="mm-content-inbox" placeholder="Message..." type="text" width=80></input><br>
             <button onclick="postInbox();">Post inbox</button>
         </div>
         <div id="user-display" class="hidden">
             <button onclick="switchScene('main-scene');">Return to Home</button><br>
-            <img id="ud-avatar" class="pfp" src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg'">
-            <span id="ud-display-name">Paradock</span><br>
-            <span id="ud-username" class="mono">@paradock</span><br>
-            <small id="ud-created">11/30/2024, 7:56:56 PM</small><br>
-            <small id="ud-permissions">Can POST</small><br><br>
+            <img id="ud-avatar" class="pfp" src="default.jpeg" onerror="this.src = 'default.jpeg'">
+            <span id="ud-display-name"></span><br>
+            <span id="ud-username" class="mono"></span><br>
+            <small id="ud-created"></small><br>
+            <small id="ud-permissions"></small><br><br>
             <span id="ud-bio">This user does not have a bio.</span><br>
         </div>
         </div>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'8eb1f6d84f15eead',t:'MTczMzA0NDQzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: medium; visibility: hidden;"></iframe>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'8eb26ddeda8fed25',t:'MTczMzA0OTMxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
     <script>
 // hello guys gals and gays!
 // keep in mind that unlike rome, this was infact built in a day
@@ -582,5 +586,4 @@ function ping() {
 
 setInterval(ping, 5000)
     </script>
-
-</body></html>
+</html>
