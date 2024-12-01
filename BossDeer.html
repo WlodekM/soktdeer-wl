@@ -49,6 +49,9 @@
                 text-decoration: underline;
                 cursor: pointer;
             }
+            .clickable {
+                cursor: pointer;
+            }
             .hidden {
                 display: none;
             }
@@ -57,6 +60,8 @@
                 padding: 6px;
                 border-radius: 4px;
                 margin-bottom: 8px;
+                word-break: break-word;
+                overflow-wrap: break-word;
             }
             .mono {
                 font-family: monospace;
@@ -83,7 +88,10 @@
             .attachment {
                 margin-left:4px;
                 margin-right:4px;
-                max-height:15vw;
+                max-height:25vw;
+                max-width:25vw;
+                width:auto;
+                height:auto;
             }
             .rl-guidelines {
                 background-color: #999085;
@@ -95,6 +103,10 @@
                 margin: 4px;
                 width: 90vw;
             }
+            .reply {
+                color: #c2baac;
+                font-style: italic;
+            }
         </style>
     </head>
     <body>
@@ -102,46 +114,72 @@
         <div class="scene">
         <div id="loading" class="hidden"><center>Taking too long to load? Try <span onclick="logOut();" class="text-clickable">a full reset</span>.</center></div>
         <div id="connection-lost" class="hidden"><center>Connection was lost.<br><span onclick="window.location.reload();" class="text-clickable">Reload</span>.</center></div>
-        <div id="register-login" class=""><center>
-            <input id="rl-username" placeholder="Username..." maxlength="20"><br>
+        <div id="register-login" class="hidden"><center>
+            <input id="rl-username" placeholder="Username..." type="text" maxlength="20" value="wlodekm"><br>
             <input id="rl-password" placeholder="Password..." type="password"><br>
-            <input id="rl-invitecode" placeholder="Invite code..." maxlength="16"><br>
+            <input id="rl-invitecode" placeholder="Invite code..." type="text" maxlength="16"><br>
             <button onclick="logIn();">Log in</button> 
             <button onclick="register();">Register</button><br><br>
             <small>(You only need to provide an invite code when registering.)<br>(Please ensure you have read the <a href="https://deer.meltland.dev/GUIDELINES.txt">GUIDELINES</a> (also provided below) before creating an account.)</small><br>
              <embed class="rl-guidelines" type="text/plain" src="BossDeer_files/GUIDELINES.txt"><br> 
-            <small id="rl-version">1.0.5b - SOKTDEER-2024.11.30-02.07</small>
+            <small id="rl-version">1.1.1b - SOKTDEER-2024.11.30-18.13</small>
         </center></div>
-        <div id="main-scene" class="hidden">
-            <button id="ms-name" disabled="disabled">@...</button> | <button onclick="switchScene('main-config');">Settings</button> <button onclick="alert('Not done yet!');">Inbox</button> <button id="ms-button-mod" class="hidden" onclick="switchScene('main-moderation');">Moderation</button><br>
-            <small id="ms-ulist">0 users online ()</small><br><br><center>
-            <button onclick="addAttachment();">+</button> <input id="ms-msg" maxlength="2000" onkeydown="if (event.keyCode == 13) {sendPost();}" placeholder="What's on your mind?"> <button id="ms-button-post" onclick="sendPost();">Post</button><br><small id="ms-details"></small></center><br>
-            <div id="ms-posts"><div class="post"><span><b>SoktDeer</b> (<span class="mono">@soktdeer</span>)</span><br><small>11/30/2024, 9:15:07 AM - <span class="text-clickable" onclick="reply(0);">Reply</span></small><br><span>Welcome to SoktDeer! Start chatting!</span></div></div>
+        <div id="main-scene" class="">
+            <button id="ms-name" disabled="disabled">@uwu</button> | <button onclick="switchScene('main-config');">Settings</button> <button onclick="switchScene('main-inbox');">Inbox</button> <button id="ms-button-mod" class="hidden" onclick="switchScene('main-moderation');">Moderation</button><br>
+            <small id="ms-ulist">7 users online (<span class="clickable" onclick="showUser('paradock');">paradock</span>, <span class="clickable" onclick="showUser('tnix');">tnix</span>, <span class="clickable" onclick="showUser('pkmnq');">pkmnq</span>, <span class="clickable" onclick="showUser('uwu');">uwu</span>, <span class="clickable" onclick="showUser('engineerrunner');">engineerrunner</span>, <span class="clickable" onclick="showUser('notfenixio');">notfenixio</span>, <span class="clickable" onclick="showUser('mybearworld');">mybearworld</span>)</small><br><br><center>
+            <button onclick="addAttachment();">+</button> <input id="ms-msg" maxlength="2000" onkeydown="if (event.keyCode == 13) {sendPost();}" placeholder="What's on your mind?" type="text"> <button id="ms-button-post" onclick="sendPost();">Post</button><br><small id="ms-details"></small></center><br>
+            <div id="ms-posts"><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:49:49 AM - <span class="text-clickable" onclick="reply(17330465892963710);">Reply</span></small><br><span>if melt has any plans of open sourcing it</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:49:40 AM - <span class="text-clickable" onclick="reply(17330465798577700);">Reply</span></small><br><span>but i'd like to contribute on the backend</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:49:33 AM - <span class="text-clickable" onclick="reply(17330465734066890);">Reply</span></small><br><span>okay im starting a client :100:</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:49:23 AM - <span class="text-clickable" onclick="reply(17330465629921164);">Reply</span></small><br><span>tink stripes is also working on a client and some other ppl too</span></div><div class="post"><img src="BossDeer_files/main.png" onerror="this.src = 'default.jpeg';" onclick='showUser("mybearworld");' class="clickable pfp"><span onclick='showUser("mybearworld");' class="clickable"><b>mybearworld</b> (<span class="mono">@mybearworld</span>)</span><br><small>12/1/2024, 11:49:13 AM - <span class="text-clickable" onclick="reply(17330465525163078);">Reply</span></small><br><span>how far is souple's one</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:48:57 AM - <span class="text-clickable" onclick="reply(17330465372589664);">Reply</span></small><br><span class="reply">→ notfenixio (@notfenixio): hell wlodek already made a client for this??</span><hr><span>ye</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:48:50 AM - <span class="text-clickable" onclick="reply(17330465299760594);">Reply</span></small><br><span class="reply">→ uwu (@uwu): just use sd-wl</span><hr><span>hell wlodek already made a client for this??</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:48:44 AM - <span class="text-clickable" onclick="reply(17330465235727558);">Reply</span></small><br><span class="reply">→ uwu (@uwu): or replace the input with a textarea</span><hr><span>its literally just  that lmao</span></div><div class="post"><img src="BossDeer_files/main.png" onerror="this.src = 'default.jpeg';" onclick='showUser("mybearworld");' class="clickable pfp"><span onclick='showUser("mybearworld");' class="clickable"><b>mybearworld</b> (<span class="mono">@mybearworld</span>)</span><br><small>12/1/2024, 11:48:36 AM - <span class="text-clickable" onclick="reply(17330465161061626);">Reply</span></small><br><span class="reply">→ uwu (@uwu): just use sd-wl</span><hr><span>those are certainly letters</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:48:32 AM - <span class="text-clickable" onclick="reply(17330465119909870);">Reply</span></small><br><span>or replace the input with a textarea</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:48:25 AM - <span class="text-clickable" onclick="reply(17330465048068834);">Reply</span></small><br><span class="reply">→ mybearworld (@mybearworld): i never realized how dependent i was on being able to have new lines in posts until soktdeer</span><hr><span>just use sd-wl</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:48:18 AM - <span class="text-clickable" onclick="reply(17330464977167396);">Reply</span></small><br><span>imo the current system for getting stuff kinda sucks</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:48:15 AM - <span class="text-clickable" onclick="reply(17330464947202844);">Reply</span></small><br><span>test</span></div><div class="post"><img src="BossDeer_files/main.png" onerror="this.src = 'default.jpeg';" onclick='showUser("mybearworld");' class="clickable pfp"><span onclick='showUser("mybearworld");' class="clickable"><b>mybearworld</b> (<span class="mono">@mybearworld</span>)</span><br><small>12/1/2024, 11:48:01 AM - <span class="text-clickable" onclick="reply(17330464805856944);">Reply</span></small><br><span>i never realized how dependent i was on being able to have new lines in posts until soktdeer</span></div><div class="post"><img src="BossDeer_files/main.png" onerror="this.src = 'default.jpeg';" onclick='showUser("mybearworld");' class="clickable pfp"><span onclick='showUser("mybearworld");' class="clickable"><b>mybearworld</b> (<span class="mono">@mybearworld</span>)</span><br><small>12/1/2024, 11:47:38 AM - <span class="text-clickable" onclick="reply(17330464576403114);">Reply</span></small><br><span class="reply">→ notfenixio (@notfenixio): that's nothing, i had to delete +10 repositories</span><hr><span>i think i just archived seven</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:47:33 AM - <span class="text-clickable" onclick="reply(17330464525014298);">Reply</span></small><br><span>honestly this is better than meower svelte</span></div><div class="post"><img src="BossDeer_files/main.png" onerror="this.src = 'default.jpeg';" onclick='showUser("mybearworld");' class="clickable pfp"><span onclick='showUser("mybearworld");' class="clickable"><b>mybearworld</b> (<span class="mono">@mybearworld</span>)</span><br><small>12/1/2024, 11:47:07 AM - <span class="text-clickable" onclick="reply(17330464273647166);">Reply</span></small><br><span class="reply">→ mybearworld (@mybearworld): i kind of want to make a client</span><hr><span>it would be a giant waste of my time though (and probably end up like roarer-1)</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:47:05 AM - <span class="text-clickable" onclick="reply(17330464251507980);">Reply</span></small><br><span class="reply">→ mybearworld (@mybearworld): over half of these are dead now</span><hr><span>that's nothing, i had to delete +10 repositories</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:46:54 AM - <span class="text-clickable" onclick="reply(17330464136149772);">Reply</span></small><br><span>~~though it's good that roarer is dead /j~~</span></div><div class="post"><img src="BossDeer_files/main.png" onerror="this.src = 'default.jpeg';" onclick='showUser("mybearworld");' class="clickable pfp"><span onclick='showUser("mybearworld");' class="clickable"><b>mybearworld</b> (<span class="mono">@mybearworld</span>)</span><br><small>12/1/2024, 11:46:52 AM - <span class="text-clickable" onclick="reply(17330464115707182);">Reply</span></small><br><span>i kind of want to make a client</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:46:38 AM - <span class="text-clickable" onclick="reply(17330463982290142);">Reply</span></small><br><span class="reply">→ mybearworld (@mybearworld): over half of these are dead now</span><hr><span>😔</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:46:14 AM - <span class="text-clickable" onclick="reply(17330463741451450);">Reply</span></small><br><span class="reply">→ uwu (@uwu): yeah</span><hr><span>rn its almost like meower before the api</span></div><div class="post"><img src="BossDeer_files/main.png" onerror="this.src = 'default.jpeg';" onclick='showUser("mybearworld");' class="clickable pfp"><span onclick='showUser("mybearworld");' class="clickable"><b>mybearworld</b> (<span class="mono">@mybearworld</span>)</span><br><small>12/1/2024, 11:46:03 AM - <span class="text-clickable" onclick="reply(17330463626591312);">Reply</span></small><br><span>over half of these are dead now</span><hr><span><a target="_blank" rel="noopener noreferrer" href="https://i.ibb.co/895LRmv/Screenshot-2024-12-01-104411.png">Attachment 1 (https://i.ibb.co/895LRmv/Screenshot-2024-12-01-104411.png)</a><br></span><img src="BossDeer_files/Screenshot-2024-12-01-104411.png" class="attachment" onerror="this.remove();"></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:45:48 AM - <span class="text-clickable" onclick="reply(17330463478037320);">Reply</span></small><br><span class="reply">→ notfenixio (@notfenixio): oh what soktdeer uses websockets for everything</span><hr><span>yeah</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:45:34 AM - <span class="text-clickable" onclick="reply(17330463337638764);">Reply</span></small><br><span>why does the client use var</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:45:04 AM - <span class="text-clickable" onclick="reply(17330463043972132);">Reply</span></small><br><span>oh what soktdeer uses websockets for everything</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:44:43 AM - <span class="text-clickable" onclick="reply(17330462830725092);">Reply</span></small><br><span>test again</span></div><div class="post"><img src="BossDeer_files/f.png" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:43:54 AM - <span class="text-clickable" onclick="reply(17330462338891258);">Reply</span></small><br><span>test</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:42:44 AM - <span class="text-clickable" onclick="reply(17330461639242582);">Reply</span></small><br><span>hey</span></div><div class="post"><img src="BossDeer_files/main.png" onerror="this.src = 'default.jpeg';" onclick='showUser("mybearworld");' class="clickable pfp"><span onclick='showUser("mybearworld");' class="clickable"><b>mybearworld</b> (<span class="mono">@mybearworld</span>)</span><br><small>12/1/2024, 11:42:39 AM - <span class="text-clickable" onclick="reply(17330461587769410);">Reply</span></small><br><span>hi</span></div><div class="post"><img src="BossDeer_files/9s8y4-Hs-Iw-TTq1-El-YSi-Up-WKTa.webp" onerror="this.src = 'default.jpeg';" onclick='showUser("engineerrunner");' class="clickable pfp"><span onclick='showUser("engineerrunner");' class="clickable"><b>emergency froger</b> (<span class="mono">@engineerrunner</span>)</span><br><small>12/1/2024, 11:41:32 AM - <span class="text-clickable" onclick="reply(17330460920989778);">Reply</span></small><br><span>but wouldnt it be better to waste their storage space</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:40:16 AM - <span class="text-clickable" onclick="reply(17330460156359238);">Reply</span></small><br><span>imgur time</span></div><div class="post"><img src="BossDeer_files/hx7wfw.png" onerror="this.src = 'default.jpeg';" onclick='showUser("wlodekm");' class="clickable pfp"><span onclick='showUser("wlodekm");' class="clickable"><b>wlod</b> (<span class="mono">@wlodekm</span>)</span><br><small>12/1/2024, 11:39:46 AM - <span class="text-clickable" onclick="reply(17330459863870134);">Reply</span></small><br><span>(by a russian person, my tying is wors tahn my aiming)</span></div><div class="post"><img src="BossDeer_files/hx7wfw.png" onerror="this.src = 'default.jpeg';" onclick='showUser("wlodekm");' class="clickable pfp"><span onclick='showUser("wlodekm");' class="clickable"><b>wlod</b> (<span class="mono">@wlodekm</span>)</span><br><small>12/1/2024, 11:39:00 AM - <span class="text-clickable" onclick="reply(17330459401134636);">Reply</span></small><br><span>idk but they made by russia and allow login with a socil media monitored and controlled by their "goverment"</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:38:22 AM - <span class="text-clickable" onclick="reply(17330459022803480);">Reply</span></small><br><span>oh they're pro-russia?</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:38:14 AM - <span class="text-clickable" onclick="reply(17330458936598402);">Reply</span></small><br><span>what</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:38:06 AM - <span class="text-clickable" onclick="reply(17330458857200450);">Reply</span></small><br><span>it russia</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:38:02 AM - <span class="text-clickable" onclick="reply(17330458824194946);">Reply</span></small><br><span class="reply">→ notfenixio (@notfenixio): i never thought i'd need to open up imgbb even again</span><hr><span>dont</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:37:57 AM - <span class="text-clickable" onclick="reply(17330458770952724);">Reply</span></small><br><span class="reply">→
+ uwu (@uwu): one of the side thingies witht the speakers broke off from 
+the base but the wire is attached from the bottom so it still worked</span><hr><span>just use hot glue</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:37:33 AM - <span class="text-clickable" onclick="reply(17330458529509340);">Reply</span></small><br><span>i never thought i'd need to open up imgbb even again</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:37:27 AM - <span class="text-clickable" onclick="reply(17330458467356348);">Reply</span></small><br><span>one of the side thingies witht the speakers broke off from the base but the wire is attached from the bottom so it still worked</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:37:06 AM - <span class="text-clickable" onclick="reply(17330458262536060);">Reply</span></small><br><span>makes sense</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:36:54 AM - <span class="text-clickable" onclick="reply(17330458143052694);">Reply</span></small><br><span>i sat on them accidentally</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("notfenixio");' class="clickable pfp"><span onclick='showUser("notfenixio");' class="clickable"><b>notfenixio</b> (<span class="mono">@notfenixio</span>)</span><br><small>12/1/2024, 11:34:55 AM - <span class="text-clickable" onclick="reply(17330456952597874);">Reply</span></small><br><span>how do you even get to that point</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:34:29 AM - <span class="text-clickable" onclick="reply(17330456690379972);">Reply</span></small><br><span>my headphones are now held together by duct tape</span></div><div class="post"><img src="BossDeer_files/9s8y4-Hs-Iw-TTq1-El-YSi-Up-WKTa.webp" onerror="this.src = 'default.jpeg';" onclick='showUser("engineerrunner");' class="clickable pfp"><span onclick='showUser("engineerrunner");' class="clickable"><b>emergency froger</b> (<span class="mono">@engineerrunner</span>)</span><br><small>12/1/2024, 11:19:56 AM - <span class="text-clickable" onclick="reply(17330447961124720);">Reply</span></small><br><span>"Stalin
+ is to Marxism what Keir Starmer is to the labour movement" - 'stalin', 
+in communist monopoly https://www.youtube.com/watch?v=StdUwfhFtt4</span></div><div class="post"><img src="BossDeer_files/9s8y4-Hs-Iw-TTq1-El-YSi-Up-WKTa.webp" onerror="this.src = 'default.jpeg';" onclick='showUser("engineerrunner");' class="clickable pfp"><span onclick='showUser("engineerrunner");' class="clickable"><b>emergency froger</b> (<span class="mono">@engineerrunner</span>)</span><br><small>12/1/2024, 11:17:48 AM - <span class="text-clickable" onclick="reply(17330446675657928);">Reply</span></small><br><span>because</span></div><div class="post"><img src="BossDeer_files/f43guw.jpg" onerror="this.src = 'default.jpeg';" onclick='showUser("gerirex21");' class="clickable pfp"><span onclick='showUser("gerirex21");' class="clickable"><b>gerirex20</b> (<span class="mono">@gerirex21</span>)</span><br><small>12/1/2024, 11:17:37 AM - <span class="text-clickable" onclick="reply(17330446573940950);">Reply</span></small><br><span>wy the chat death</span></div><div class="post"><img src="BossDeer_files/f43guw.jpg" onerror="this.src = 'default.jpeg';" onclick='showUser("gerirex21");' class="clickable pfp"><span onclick='showUser("gerirex21");' class="clickable"><b>gerirex20</b> (<span class="mono">@gerirex21</span>)</span><br><small>12/1/2024, 11:17:32 AM - <span class="text-clickable" onclick="reply(17330446523757052);">Reply</span></small><br><span>OH NO</span></div><div class="post"><img src="BossDeer_files/f43guw.jpg" onerror="this.src = 'default.jpeg';" onclick='showUser("gerirex21");' class="clickable pfp"><span onclick='showUser("gerirex21");' class="clickable"><b>gerirex20</b> (<span class="mono">@gerirex21</span>)</span><br><small>12/1/2024, 11:17:27 AM - <span class="text-clickable" onclick="reply(17330446468779548);">Reply</span></small><br><span>the admin</span></div><div class="post"><img src="BossDeer_files/f43guw.jpg" onerror="this.src = 'default.jpeg';" onclick='showUser("gerirex21");' class="clickable pfp"><span onclick='showUser("gerirex21");' class="clickable"><b>gerirex20</b> (<span class="mono">@gerirex21</span>)</span><br><small>12/1/2024, 11:16:49 AM - <span class="text-clickable" onclick="reply(17330446093702732);">Reply</span></small><br><span>if you ask cole</span></div><div class="post"><img src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("uwu");' class="clickable pfp"><span onclick='showUser("uwu");' class="clickable"><b>uwu</b> (<span class="mono">@uwu</span>)</span><br><small>12/1/2024, 11:14:39 AM - <span class="text-clickable" onclick="reply(17330444790525616);">Reply</span></small><br><span>wait are we allowed to create bots</span></div><div class="post"><img src="BossDeer_files/f43guw.jpg" onerror="this.src = 'default.jpeg';" onclick='showUser("gerirex21");' class="clickable pfp"><span onclick='showUser("gerirex21");' class="clickable"><b>gerirex20</b> (<span class="mono">@gerirex21</span>)</span><br><small>12/1/2024, 11:07:21 AM - <span class="text-clickable" onclick="reply(17330440407680924);">Reply</span></small><br><span>holá</span></div><div class="post"><img src="BossDeer_files/hx7wfw.png" onerror="this.src = 'default.jpeg';" onclick='showUser("wlodekm");' class="clickable pfp"><span onclick='showUser("wlodekm");' class="clickable"><b>wlod</b> (<span class="mono">@wlodekm</span>)</span><br><small>12/1/2024, 10:51:41 AM - <span class="text-clickable" onclick="reply(17330431014155142);">Reply</span></small><br><span>henlo</span></div><div class="post"><img src="BossDeer_files/9s8y4-Hs-Iw-TTq1-El-YSi-Up-WKTa.webp" onerror="this.src = 'default.jpeg';" onclick='showUser("engineerrunner");' class="clickable pfp"><span onclick='showUser("engineerrunner");' class="clickable"><b>emergency froger</b> (<span class="mono">@engineerrunner</span>)</span><br><small>12/1/2024, 10:47:26 AM - <span class="text-clickable" onclick="reply(17330428461811950);">Reply</span></small><br><span>h</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:33:47 AM - <span class="text-clickable" onclick="reply(17330420265334766);">Reply</span></small><br><span>goobnight :3</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:33:16 AM - <span class="text-clickable" onclick="reply(17330419957045452);">Reply</span></small><br><span class="reply">→ Pix (@pix): I like boobies :3</span><hr><span>real!!!!</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:20:37 AM - <span class="text-clickable" onclick="reply(17330412370544342);">Reply</span></small><br><span>I like boobies :3</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:20:25 AM - <span class="text-clickable" onclick="reply(17330412248615126);">Reply</span></small><br><span>Bye</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:20:22 AM - <span class="text-clickable" onclick="reply(17330412220782176);">Reply</span></small><br><span>BossDeer users</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:20:16 AM - <span class="text-clickable" onclick="reply(17330412157131224);">Reply</span></small><br><span>Goodnihht,</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:20:09 AM - <span class="text-clickable" onclick="reply(17330412085673790);">Reply</span></small><br><span>I guess I’ll asssune you left</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:19:56 AM - <span class="text-clickable" onclick="reply(17330411959464242);">Reply</span></small><br><span>Im so confused</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:18:58 AM - <span class="text-clickable" onclick="reply(17330411380820312);">Reply</span></small><br><span>Did you leave?</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:18:05 AM - <span class="text-clickable" onclick="reply(17330410850095106);">Reply</span></small><br><span>I’m confused</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:18:01 AM - <span class="text-clickable" onclick="reply(17330410814782962);">Reply</span></small><br><span>Wait what</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:17:35 AM - <span class="text-clickable" onclick="reply(17330410554216934);">Reply</span></small><br><span>Cant say what</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:17:22 AM - <span class="text-clickable" onclick="reply(17330410416864074);">Reply</span></small><br><span>What</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:17:13 AM - <span class="text-clickable" onclick="reply(17330410329565818);">Reply</span></small><br><span class="reply">→ Pix (@pix): Wait I missed 3:14</span><hr><span>i cant say it</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:17:08 AM - <span class="text-clickable" onclick="reply(17330410281776492);">Reply</span></small><br><span>Booo I like pi</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:17:01 AM - <span class="text-clickable" onclick="reply(17330410207531230);">Reply</span></small><br><span>Wait I missed 3:14</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:16:55 AM - <span class="text-clickable" onclick="reply(17330410145205366);">Reply</span></small><br><span>How</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:16:54 AM - <span class="text-clickable" onclick="reply(17330410143757152);">Reply</span></small><br><span>brb</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:16:50 AM - <span class="text-clickable" onclick="reply(17330410103085106);">Reply</span></small><br><span>wait i know how to stay up</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:16:47 AM - <span class="text-clickable" onclick="reply(17330410072925462);">Reply</span></small><br><span>Good night</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:16:42 AM - <span class="text-clickable" onclick="reply(17330410020016250);">Reply</span></small><br><span>No one else here is active rn so ig I would be leaving too :(</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:16:21 AM - <span class="text-clickable" onclick="reply(17330409810690160);">Reply</span></small><br><span>i can barely read the text</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:16:01 AM - <span class="text-clickable" onclick="reply(17330409613294096);">Reply</span></small><br><span>Boooo ok</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:15:54 AM - <span class="text-clickable" onclick="reply(17330409540081678);">Reply</span></small><br><span class="reply">→ Pix (@pix): What</span><hr><span>goobnight :3</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:15:38 AM - <span class="text-clickable" onclick="reply(17330409383277990);">Reply</span></small><br><span>What</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:15:26 AM - <span class="text-clickable" onclick="reply(17330409264761834);">Reply</span></small><br><span>the nights everyeeping :3</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:15:26 AM - <span class="text-clickable" onclick="reply(17330409260075634);">Reply</span></small><br><span>I should too</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:15:13 AM - <span class="text-clickable" onclick="reply(17330409128804122);">Reply</span></small><br><span>i should eep</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:15:10 AM - <span class="text-clickable" onclick="reply(17330409099226780);">Reply</span></small><br><span>New <br> line</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:15:01 AM - <span class="text-clickable" onclick="reply(17330409010726656);">Reply</span></small><br><span>Yayyyyyyyyyyyyyyyyyyyyyy</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:14:18 AM - <span class="text-clickable" onclick="reply(17330408584181068);">Reply</span></small><br><span>Unfortunately</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:14:15 AM - <span class="text-clickable" onclick="reply(17330408547726950);">Reply</span></small><br><span>Wide awake</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:14:10 AM - <span class="text-clickable" onclick="reply(17330408504187750);">Reply</span></small><br><span>howd i make it to 6 that one time</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:14:10 AM - <span class="text-clickable" onclick="reply(17330408496819810);">Reply</span></small><br><span>I’m still</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:13:54 AM - <span class="text-clickable" onclick="reply(17330408335612598);">Reply</span></small><br><span>i can barely think anymire</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:13:40 AM - <span class="text-clickable" onclick="reply(17330408203470444);">Reply</span></small><br><span>Then chat went silent</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:12:56 AM - <span class="text-clickable" onclick="reply(17330407762015024);">Reply</span></small><br><span class="reply">→ Pix (@pix): Did you mean, “virile”? (That word appeared in adventure time 💀 $</span><hr><span>I’m a great role model!</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:12:48 AM - <span class="text-clickable" onclick="reply(17330407684506192);">Reply</span></small><br><span class="reply">→ Pix (@pix): Did you mean, “virile”? (That word appeared in adventure time 💀 $</span><hr><span>) not $</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:12:45 AM - <span class="text-clickable" onclick="reply(17330407645031190);">Reply</span></small><br><span class="reply">→ caleb (@caleb): Ok gn</span><hr><span>goodndirh</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:12:40 AM - <span class="text-clickable" onclick="reply(17330407598085540);">Reply</span></small><br><span class="reply">→ caleb (@caleb): Ok so I doom scrolled and it’s still vile </span><hr><span>Did you mean, “virile”? (That word appeared in adventure time 💀 $</span></div><div class="post"><img src="BossDeer_files/IMG0504.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("caleb");' class="clickable pfp"><span onclick='showUser("caleb");' class="clickable"><b>caleb</b> (<span class="mono">@caleb</span>)</span><br><small>12/1/2024, 10:12:18 AM - <span class="text-clickable" onclick="reply(17330407378536852);">Reply</span></small><br><span>Ok gn</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:12:17 AM - <span class="text-clickable" onclick="reply(17330407368988824);">Reply</span></small><br><span>by social media i mean like infinite scrolling</span></div><div class="post"><img src="BossDeer_files/h5klyw.webp" onerror="this.src = 'default.jpeg';" onclick='showUser(":3");' class="clickable pfp"><span onclick='showUser(":3");' class="clickable"><b>stripes</b> (<span class="mono">@:3</span>)</span><br><small>12/1/2024, 10:11:55 AM - <span class="text-clickable" onclick="reply(17330407146637294);">Reply</span></small><br><span class="reply">→ Pix (@pix): I have a twitter account but just to see posts by a few people I don’t use it</span><hr><span>me too</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:11:44 AM - <span class="text-clickable" onclick="reply(17330407041972002);">Reply</span></small><br><span>Helllo*</span></div><div class="post"><img src="BossDeer_files/IMG0504.jpeg" onerror="this.src = 'default.jpeg';" onclick='showUser("caleb");' class="clickable pfp"><span onclick='showUser("caleb");' class="clickable"><b>caleb</b> (<span class="mono">@caleb</span>)</span><br><small>12/1/2024, 10:11:41 AM - <span class="text-clickable" onclick="reply(17330407006828104);">Reply</span></small><br><span class="reply">→ caleb (@caleb): I’m going to doomscroll instagram until I sleep or my playlist ends </span><hr><span>Ok so I doom scrolled and it’s still vile </span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:11:39 AM - <span class="text-clickable" onclick="reply(17330406993610976);">Reply</span></small><br><span>Hell <br> cheese</span></div><div class="post"><img src="BossDeer_files/94fUntitleddesign.png" onerror="this.src = 'default.jpeg';" onclick='showUser("pix");' class="clickable pfp"><span onclick='showUser("pix");' class="clickable"><b>Pix</b> (<span class="mono">@pix</span>)</span><br><small>12/1/2024, 10:11:33 AM - <span class="text-clickable" onclick="reply(17330406928709306);">Reply</span></small><br><span>Oh</span></div></div>
         </div>
         <div id="main-config" class="hidden">
             <button onclick="switchScene('main-scene');">Return to Home</button><br>
             <h2>Profile</h2>
-            <input id="mc-display-name" placeholder="Display name..." maxlength="20"> <button onclick="setDisplayName();">Set display name</button><br>
-            <input id="mc-avatar" placeholder="Avatar URL..." maxlength="656"> <button onclick="setAvatar();">Set avatar URL</button>
+            <input id="mc-display-name" placeholder="Display name..." type="text" maxlength="20"> <button onclick="setDisplayName();">Set display name</button><br>
+            <input id="mc-avatar" placeholder="Avatar URL..." type="text" maxlength="656"> <button onclick="setAvatar();">Set avatar URL</button>
             <h2>Misc</h2>
             <button onclick="updateStg('moderation')">Toggle Moderation tab</button><br><br>
             <button onclick="logOut();">Log out</button><br>
-            <small id="mc-version">1.0.5b - SOKTDEER-2024.11.30-02.07</small>
+            <small id="mc-version">1.1.1b - SOKTDEER-2024.11.30-18.13</small>
+        </div>
+        <div id="main-inbox" class="hidden">
+            <button onclick="switchScene('main-scene');">Return to Home</button><br>
+            <h2>Inbox</h2>
+            <div id="mi-posts"></div>
         </div>
         <div id="main-moderation" class="hidden">
             <button onclick="switchScene('main-scene');">Return to Home</button><br>
             <h2>Ban</h2>
-            <input id="mm-username-ban" placeholder="Username..."><br>
+            <input id="mm-username-ban" placeholder="Username..." type="text"><br>
             <input id="mm-until-ban" type="datetime-local"><br>
-            <input id="mm-reason-ban" placeholder="Reason..."><br>
+            <input id="mm-reason-ban" placeholder="Reason..." type="text"><br>
             <button onclick="ban();">Ban User</button>
             <h2>Invite code</h2>
             <span id="mm-invite-code"></span><br>
             <button onclick="genInviteCode();">Generate invite code</button><br>
             <button onclick="resetInvites();">Reset invite codes</button>
+            <h2>Clear home</h2>
+            <button onclick="clearHome();">Clear home</button>
+            <h2>Forcekick</h2>
+            <input id="mm-username-forcekick" placeholder="Username..." type="text"><br>
+            <button onclick="forceKick();">Forcekick</button>
+            <h2>Inbox</h2>
+            <input id="mm-content-inbox" placeholder="Message..." type="text" width="80"><br>
+            <button onclick="postInbox();">Post inbox</button>
+        </div>
+        <div id="user-display" class="hidden">
+            <button onclick="switchScene('main-scene');">Return to Home</button><br>
+            <img id="ud-avatar" class="pfp" src="BossDeer_files/default.jpeg" onerror="this.src = 'default.jpeg'">
+            <span id="ud-display-name">Paradock</span><br>
+            <span id="ud-username" class="mono">@paradock</span><br>
+            <small id="ud-created">11/30/2024, 7:56:56 PM</small><br>
+            <small id="ud-permissions">Can POST</small><br><br>
+            <span id="ud-bio">This user does not have a bio.</span><br>
         </div>
         </div>
-    
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'8eb1f6d84f15eead',t:'MTczMzA0NDQzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: medium; visibility: hidden;"></iframe>
     <script>
 // hello guys gals and gays!
 // keep in mind that unlike rome, this was infact built in a day
@@ -162,8 +200,8 @@ function closePopup () {
     document.getElementById("error-bar").classList.add("hidden");
 };
 
-const version = "1.0.5b";
-const serverVersion = "SOKTDEER-2024.11.30-02.07";
+const version = "1.1.1b";
+const serverVersion = "SOKTDEER-2024.11.30-18.13";
 let last_cmd = "";
 let username = "";
 let logged_in = false;
@@ -217,10 +255,17 @@ ws.onmessage = function (event) {
             displayError(`The server is on a different version than the client. Be wary of issues while using the client. (Expected "${serverVersion}", got "${incoming.version}")`);
         };
         ulist = incoming.ulist;
-        document.getElementById("ms-ulist").innerText = `${ulist.length} users online (${ulist.toString().replaceAll(",", ", ")})`;
+        var ulstring = "";
+        for (const i in ulist) {
+            ulstring += `<span class="clickable" onclick="showUser('${ulist[i]}');">${ulist[i]}</span>` // fuck i love bad practices!!
+            if (i != ulist.length - 1) {
+                ulstring += ", "
+            };
+        };
+        document.getElementById("ms-ulist").innerHTML = `${ulist.length} users online (${ulstring})`;
         posts = incoming.messages;
         for (const i in incoming.messages) {
-            loadPost(incoming.messages[i], true);
+            loadPost(incoming.messages[i], true, false);
         };
         if (localStorage.getItem("username") == null || localStorage.getItem("token") == null) {
             scene = "register-login";
@@ -233,7 +278,14 @@ ws.onmessage = function (event) {
         };
     } else if (incoming.command == "ulist") {
         ulist = incoming.ulist;
-        document.getElementById("ms-ulist").innerText = `${ulist.length} users online (${ulist.toString().replaceAll(",", ", ")})`;
+        var ulstring = "";
+        for (const i in ulist) {
+            ulstring += `<span class="clickable" onclick="showUser('${ulist[i]}');">${ulist[i]}</span>` // fuck i love bad practices!!
+            if (i != ulist.length - 1) {
+                ulstring += ", "
+            };
+        };
+        document.getElementById("ms-ulist").innerHTML = `${ulist.length} users online (${ulstring})`;
     };
     if ("error" in incoming) {
         if (incoming.error) {
@@ -261,9 +313,24 @@ ws.onmessage = function (event) {
         };
         logged_in = true;
     } else if (incoming.command == "new_post") {
-        loadPost(incoming.data, false);
+        loadPost(incoming.data, false, false);
     } else if (last_cmd == "gen_invite" && "invite_code" in incoming) {
-        document.getElementById("mm-invite-code").innerText = `Your invite code is "${incoming.invite_code}". Use it on any SoktDeer client to sign up!\n\nCodes: ${incoming.invite_codes}`
+        document.getElementById("mm-invite-code").innerText = `Your invite code is "${incoming.invite_code}". Use it on any SoktDeer client to sign up!\nhttps://deer.meltland.dev/\n\nCodes: ${incoming.invite_codes}`
+    } else if (last_cmd == "get_inbox" && "inbox" in incoming) {
+        document.getElementById("mi-posts").innerHTML = ""
+        for (const i in incoming.inbox) {
+            loadPost(incoming.inbox[i], true, true);
+        };
+    } else if (last_cmd == "get_user" && "user" in incoming) {
+        var bio;
+        if (incoming.user.bio == "") {bio = "This user does not have a bio."} else {bio = incoming.user.bio};
+        document.getElementById("ud-avatar").src = incoming.user.avatar;
+        document.getElementById("ud-display-name").innerText = incoming.user.display_name;
+        document.getElementById("ud-username").innerText = "@" + incoming.user.username;
+        document.getElementById("ud-created").innerText = new Date(incoming.user.created * 1000).toLocaleString();
+        document.getElementById("ud-permissions").innerText = `Can ${incoming.user.permissions.toString()}`;
+        document.getElementById("ud-bio").innerText = bio;
+        switchScene('user-display');
     };
 };
 
@@ -272,6 +339,13 @@ ws.onclose = function (event) {
 };
 
 function switchScene (newScene) {
+    if (newScene == "main-inbox") {
+        last_cmd = "get_inbox"
+        ws.send(JSON.stringify({command: "get_inbox"}))
+    };
+    if (scene == "user-display") {
+        document.getElementById("ud-avatar").src = "default.jpeg";
+    };
     document.getElementById(scene).classList.toggle("hidden");
     document.getElementById(newScene).classList.toggle("hidden");
     scene = newScene;
@@ -294,7 +368,7 @@ function logOut() {
     window.location.reload();
 };
 
-function loadPost(resf, isFetch) {
+function loadPost(resf, isFetch, isInbox) {
     console.log("Loading post " + resf.id)
     var tsr = resf.created
     var tsra = tsr * 1000
@@ -303,37 +377,61 @@ function loadPost(resf, isFetch) {
     ts.setTime(tsrb);
     var sts = ts.toLocaleString();
 
-    var content = resf.content
+    var replies_loaded = ""
     for (const i in resf.replies) {
-        content = `→ ${resf.replies[i].author.display_name} (@${resf.replies[i].author.username}): ${resf.replies[i].content}\n${content}`
+        replies_loaded += `→ ${resf.replies[i].author.display_name} (@${resf.replies[i].author.username}): ${resf.replies[i].content}`
+        if (i != resf.replies.length - 1) {
+            replies_loaded += "\n"
+        };
     };
 
     var post = document.createElement("div");
     post.classList.add("post");
 
+    var avatar = document.createElement("img");
     if (resf.author.avatar) {
-        var avatar = document.createElement("img");
         avatar.src = resf.author.avatar;
-        avatar.classList.add("pfp");
-        post.appendChild(avatar);
+    } else {
+        avatar.src = "default.jpeg";
     };
+    avatar.setAttribute("onerror", "this.src = 'default.jpeg';")
+    avatar.setAttribute("onclick", `showUser("${resf.author.username}");`);
+    avatar.classList.add("clickable");
+    avatar.classList.add("pfp");
+    post.appendChild(avatar);
 
     var postUsername = document.createElement("span");
     postUsername.innerHTML = `<b>${resf.author.display_name}</b> (<span class="mono">@${resf.author.username}</span>)`;
+    postUsername.setAttribute("onclick", `showUser("${resf.author.username}");`);
+    postUsername.classList.add("clickable");
     post.appendChild(postUsername);
 
     var breaklineA = document.createElement("br");
     post.appendChild(breaklineA);
 
     var postDetails = document.createElement("small");
-    postDetails.innerHTML = `${sts} - <span class="text-clickable" onclick="reply(${resf.id});">Reply</span>`;
+    if (isInbox) {
+        postDetails.innerHTML = `${sts}`;
+    } else {
+        postDetails.innerHTML = `${sts} - <span class="text-clickable" onclick="reply(${resf.id});">Reply</span>`;
+    };
     post.appendChild(postDetails);
     
     var breaklineB = document.createElement("br");
     post.appendChild(breaklineB);
+    
+    if (resf.replies.length != 0) {
+        var replyContent = document.createElement("span");
+        replyContent.innerText = replies_loaded;
+        replyContent.classList.add("reply");
+        post.appendChild(replyContent);
+        
+        var horlineB = document.createElement("hr");
+        post.appendChild(horlineB);
+    };
 
     var postContent = document.createElement("span");
-    postContent.innerText = content;
+    postContent.innerText = resf.content;
     post.appendChild(postContent);
 
     if (resf.attachments.length != 0) {
@@ -370,21 +468,30 @@ function loadPost(resf, isFetch) {
             post.appendChild(attachmentC);
         };
     };
+    
+    var postboxid;
+    if (isInbox) {postboxid = "mi-posts"} else {postboxid = "ms-posts"};
 
     if (isFetch) {
-        document.getElementById("ms-posts").appendChild(post);
+        document.getElementById(postboxid).appendChild(post);
     } else {
-        document.getElementById("ms-posts").insertBefore(post, document.getElementById("ms-posts").firstChild);
+        document.getElementById(postboxid).insertBefore(post, document.getElementById(postboxid).firstChild);
     }
 };
 
 function sendPost() {
     last_cmd = "post";
-    ws.send(JSON.stringify({command: "post", content: document.getElementById("ms-msg").value, replies: replies, attachments: attachments}))
+    ws.send(JSON.stringify({command: "post", content: document.getElementById("ms-msg").value.replaceAll("\\n", "\n"), replies: replies, attachments: attachments}))
     document.getElementById("ms-msg").value = "";
     attachments = [];
     replies = [];
     updateDetailsMsg();
+};
+
+function postInbox() {
+    last_cmd = "post_inbox";
+    ws.send(JSON.stringify({command: "post_inbox", content: document.getElementById("mm-content-inbox").value.replaceAll("\\n", "\n"), replies: [], attachments: []}))
+    document.getElementById("mm-content-inbox").value = "";
 };
 
 function ban() {
@@ -459,6 +566,22 @@ function clearAll() {
     replies = [];
     attachments = [];
     updateDetailsMsg();
+};
+
+function clearHome() {
+    last_cmd = "clear_home";
+    ws.send(JSON.stringify({command: "clear_home"}))
+};
+
+function forceKick() {
+    last_cmd = "force_kick";
+    ws.send(JSON.stringify({command: "force_kick", username: document.getElementById("mm-username-forcekick").value}))
+    document.getElementById("mm-username-forcekick").value = "";
+};
+
+function showUser(user) {
+    last_cmd = "get_user";
+    ws.send(JSON.stringify({command: "get_user", username: user}))
 };
 
 function ping() {
