@@ -1,12 +1,22 @@
 import { shiftHeld } from "../../lib/key.js"
 import html from "../../lib/htmlbuilder.js"
 import markdwonits from "https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/+esm"
+import { openPopup } from "../../lib/popups.js";
+
+window.html = html // debug
 
 const md = markdwonits()
 
 async function fetchJSON(url, opts) {
     let resp = await fetch(url, opts);
     return await resp.json()
+}
+
+function buildUserPopup(userData) {
+    return html('div')
+        .child('pre')
+            .text(JSON.stringify(userData))
+            .up()
 }
 
 function scrollToBottomOfElement(element) {
@@ -25,7 +35,7 @@ function getUsernameHTML(msg) {
     return msg.author.display_name ? `${deHTML(msg.author.display_name)} (<code>${deHTML(msg.author.username)}</code>)`: deHTML(r.author.username)
 }
 
-export function onload() {
+export async function onload() {
     const msgArea = document.getElementById("messages");
 
     handleNewPost = function handleNewPost(post) {
@@ -75,6 +85,8 @@ export function onload() {
                 .class('message-container')
                 .child('img')
                     .attr('src', msg.author.avatar)
+                    .class('avatar')
+                    .ev('click', e => openPopup(buildUserPopup(msg.author)))
                     .up()
                 .child('div')
                     .class('message-content-container')
@@ -115,7 +127,9 @@ export function onload() {
                                         .attr('type', types[i])
                                         .up()
                             } else {
-                                return html('a').attr('href', a).text(`Attachment ${i + 1} (${a})`)
+                                return html('a')
+                                    .txt(`Attachment ${i + 1} (${a})`)
+                                    .attr('href', a)
                             }
                         })
                         .up()
@@ -129,7 +143,7 @@ export function onload() {
     // :+1:
 
     for (const msg of window.stores.sdlib.messages.reverse()) {
-        createMessage(msg)
+        await createMessage(msg)
     }
     scrollToBottomOfElement(msgArea.parentElement);
 

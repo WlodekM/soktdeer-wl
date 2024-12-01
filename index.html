@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,13 @@
     <!-- original name, ik -->
     <script type="module" src="main.js"></script>
     <link rel="stylesheet/less" type="text/css" href="styles.less" />
-    <script src="https://cdn.jsdelivr.net/npm/less" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/less"></script>
 </head>
+
 <body>
+    <div class="ap-popup-container hidden">
+        <div class="ap-popup"></div>
+    </div>
     <div class="topbar hidden" id="topbar">
         SD-WL
         <div>
@@ -22,4 +27,48 @@
 
     </div>
 </body>
+
 </html>
+<style>
+    .ap-popup-container {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        background: #0003;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+
+    .ap-main,
+    .ap-popup {
+        background: white
+    }
+
+    #ap-btn-close-popup {
+        background: 0 0;
+        border: none;
+        cursor: pointer;
+        padding: .25em
+    }
+
+    .ap-popup-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center
+    }
+
+    .ap-popup {
+        min-width: 20%;
+        padding: 1em;
+        border: 2px ridge #bbb;
+        height: fit-content
+    }
+
+    .ap-popup-container.hidden {
+        display: none
+    }
+</style>
