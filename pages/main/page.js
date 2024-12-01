@@ -73,18 +73,19 @@ export async function onload() {
     }
 
     async function createMessage(msg) {
+        const elem = html('div')
+        msgArea.appendChild(elem)
         let types = [];
         for (const attachment of msg.attachments) {
             console.debug(attachment)
             const resp = await fetch(attachment.toString());
             types.push(resp.headers.get('content-type'))
         }
-        let elem = html('div')
-            .class('message')
+        elem.class('message')
             .child('div')
                 .class('message-container')
                 .child('img')
-                    .attr('src', msg.author.avatar)
+                    .attr('src', msg.author.avatar || '/assets/pfp_sdwl.png')
                     .class('avatar')
                     .ev('click', e => openPopup(buildUserPopup(msg.author)))
                     .up()
@@ -137,15 +138,17 @@ export async function onload() {
                     .up()
                 .up()
             .up()
-        msgArea.appendChild(elem)
     }
     document.getElementById("messageForm").classList.remove('disabled')
     msgArea.innerHTML = "";
     // :+1:
 
+    msgArea.style.display = 'none'
+
     for (const msg of window.stores.sdlib.messages.reverse()) {
-        await createMessage(msg)
+        createMessage(msg)
     }
+    msgArea.style.display = 'block'
     scrollToBottomOfElement(msgArea.parentElement);
 
     stores.sdlib.wsEvents.on("new_post", handleNewPost)
