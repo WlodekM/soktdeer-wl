@@ -160,6 +160,7 @@ export async function onload() {
             attachments: []
         }))
         replies = [];
+        rednerReplyThingy()
         document.getElementById("messageInput").value = ""
     }
 
