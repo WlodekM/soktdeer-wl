@@ -5,7 +5,17 @@ import { openPopup } from "../../lib/popups.js";
 
 window.html = html // debug
 
-const md = markdwonits()
+const md = markdwonits({
+    highlight: function (str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(str, { language: lang }).value;
+            } catch (__) {}
+        }
+    
+        return ''; // use external default escaping
+    }
+})
 
 async function fetchJSON(url, opts) {
     let resp = await fetch(url, opts);
