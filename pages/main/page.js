@@ -37,18 +37,26 @@ function getUsernameHTML(msg) {
 
 export async function onload() {
     const msgArea = document.getElementById("messages");
+    const scrollTarget = msgArea.parentElement
+
+    scrollTarget.addEventListener("scroll", (event) => {
+        let scrolledToBottom = scrollTarget.scrollTopMax == scrollTarget.scrollTop;
+        if (!scrolledToBottom) {
+            document.getElementById('jump').classList.add('shown')
+        } else document.getElementById('jump').classList.remove('shown')
+    });
 
     handleNewPost = function handleNewPost(post) {
         console.debug('posting of the poster', post)
-        let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
+        let scrolledToBottom = scrollTarget.scrollTopMax == scrollTarget.scrollTop;
         createMessage(post.data)
-        if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
+        if(scrolledToBottom) scrollToBottomOfElement(scrollTarget);
     }
 
     let replies = []
 
     function rednerReplyThingy() {
-		let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
+		let scrolledToBottom = scrollTarget.scrollTopMax == scrollTarget.scrollTop;
         let elem = html('div')
             .class('replies')
             .attr('id', 'replies')
@@ -69,7 +77,7 @@ export async function onload() {
         if(document.getElementById('repliesContainer').firstChild)
             document.getElementById('repliesContainer').firstChild.remove()
         document.getElementById('repliesContainer').prepend(elem);
-		if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
+		if(scrolledToBottom) scrollToBottomOfElement(scrollTarget);
     }
 
     async function createMessage(msg) {
@@ -149,7 +157,7 @@ export async function onload() {
         createMessage(msg)
     }
     msgArea.style.display = 'block'
-    scrollToBottomOfElement(msgArea.parentElement);
+    scrollToBottomOfElement(scrollTarget);
 
     stores.sdlib.wsEvents.on("new_post", handleNewPost)
 
