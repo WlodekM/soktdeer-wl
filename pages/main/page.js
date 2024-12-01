@@ -128,6 +128,7 @@ export async function onload() {
                                         .up()
                             } else {
                                 return html('a')
+                                    .attr('target', '_blank')
                                     .txt(`Attachment ${i + 1} (${a})`)
                                     .attr('href', a)
                             }
