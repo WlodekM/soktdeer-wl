@@ -5,7 +5,17 @@ import { openPopup } from "../../lib/popups.js";
 
 window.html = html // debug
 
-const md = markdwonits()
+const md = markdwonits({
+    highlight: function (str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(str, { language: lang }).value;
+            } catch (__) {}
+        }
+    
+        return ''; // use external default escaping
+    }
+})
 
 async function fetchJSON(url, opts) {
     let resp = await fetch(url, opts);
@@ -37,26 +47,18 @@ function getUsernameHTML(msg) {
 
 export async function onload() {
     const msgArea = document.getElementById("messages");
-    const scrollTarget = msgArea.parentElement
-
-    scrollTarget.addEventListener("scroll", (event) => {
-        let scrolledToBottom = scrollTarget.scrollTopMax == scrollTarget.scrollTop;
-        if (!scrolledToBottom) {
-            document.getElementById('jump').classList.add('shown')
-        } else document.getElementById('jump').classList.remove('shown')
-    });
 
     handleNewPost = function handleNewPost(post) {
         console.debug('posting of the poster', post)
-        let scrolledToBottom = scrollTarget.scrollTopMax == scrollTarget.scrollTop;
+        let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
         createMessage(post.data)
-        if(scrolledToBottom) scrollToBottomOfElement(scrollTarget);
+        if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
     }
 
     let replies = []
 
     function rednerReplyThingy() {
-		let scrolledToBottom = scrollTarget.scrollTopMax == scrollTarget.scrollTop;
+		let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
         let elem = html('div')
             .class('replies')
             .attr('id', 'replies')
@@ -77,7 +79,7 @@ export async function onload() {
         if(document.getElementById('repliesContainer').firstChild)
             document.getElementById('repliesContainer').firstChild.remove()
         document.getElementById('repliesContainer').prepend(elem);
-		if(scrolledToBottom) scrollToBottomOfElement(scrollTarget);
+		if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
     }
 
     async function createMessage(msg) {
@@ -157,7 +159,7 @@ export async function onload() {
         createMessage(msg)
     }
     msgArea.style.display = 'block'
-    scrollToBottomOfElement(scrollTarget);
+    scrollToBottomOfElement(msgArea.parentElement);
 
     stores.sdlib.wsEvents.on("new_post", handleNewPost)
 

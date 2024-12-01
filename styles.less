@@ -20,6 +20,14 @@ body {
 	}
 }
 
+.channel {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow: auto;
+}
+
 .jump {
 	position: fixed;
 	bottom: 2em;
@@ -37,20 +45,9 @@ body {
 .jump.shown {
 	display: block;
 }
-
-.channel {
+  
+.messages {
 	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	overflow: auto;
-}
-
-.messages-container {
-	overflow: auto;
-	.messages {
-		flex-grow: 1;
-	}
 }
 
 .topbar.hidden {
@@ -83,7 +80,7 @@ body {
 			.message-header {
 				width: 100%;
 			}
-			p, h1, h2, h3, h4, h5, h6 {
+			p, h1, h2, h3, h4, h5, h6, pre {
 				margin: 0;
 			}
 			.attachment {

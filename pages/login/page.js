@@ -4,14 +4,23 @@ async function fetchJSON(url, opts) {
 }
 
 export function onload() {
+    if (localStorage.getItem('token')) {
+        window.stores.sdlib.ws.addEventListener('open', () => {
+            window.stores.sdlib.loginToken(localStorage.getItem('token'), localStorage.getItem('username'));
+            pages.goToPage('main')
+        })
+    }
     document.getElementById("loginForm").addEventListener("submit", async function (ev) {
         ev.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         document.getElementById('topbar').classList.remove('hidden')
         try {
-            await stores.sdlib.login(username, password)
+            const token = await stores.sdlib.login(username, password)
+            localStorage.setItem('token', token)
+            localStorage.setItem('username', username)
         } catch (error) {
+            console.error(error)
             return document.getElementById('error').innerText = 'An error occured\n' + error
         }
         pages.goToPage("main")

@@ -21,6 +21,11 @@ window.stores.onChange = function (store, cb) {
     return id;
 }
 const sd = window.sd = window.stores.sdlib
-sd.ws.onclose = () => pages.goToPage('login')
-sd.ws.onerror = () => pages.goToPage('login')
+function onclose() {
+    window.sd = window.stores.sdlib = new SoktDeer()
+    document.getElementById('topbar').classList.add('hidden')
+    pages.goToPage('login');
+}
+sd.ws.onclose = onclose
+sd.ws.onerror = onclose
 pages.goToPage('login')
