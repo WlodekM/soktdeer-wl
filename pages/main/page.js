@@ -14,7 +14,10 @@ const md = markdwonits({
         }
     
         return ''; // use external default escaping
-    }
+    },
+    breaks: true,
+    linkify: true,
+    typographer: true,
 })
 
 async function fetchJSON(url, opts) {
