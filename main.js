@@ -22,6 +22,7 @@ window.stores.onChange = function (store, cb) {
 }
 const sd = window.sd = window.stores.sdlib
 function onclose() {
+    console.log('uh', new Error('uuuuh'))
     window.sd = window.stores.sdlib = new SoktDeer()
     document.getElementById('topbar').classList.add('hidden')
     pages.goToPage('login');

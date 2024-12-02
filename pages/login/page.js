@@ -4,8 +4,9 @@ async function fetchJSON(url, opts) {
 }
 
 export function onload() {
-    if (localStorage.getItem('token')) {
-        window.stores.sdlib.wsEvents.on('greet', () => {
+    if (localStorage.hasOwnProperty('token') && typeof localStorage.getItem('token') == 'string') {
+        window.stores.sdlib.wsEvents.once('greet', () => {
+            document.getElementById('topbar').classList.remove('hidden')
             window.stores.sdlib.loginToken(localStorage.getItem('token'), localStorage.getItem('username'));
             pages.goToPage('main')
         })
