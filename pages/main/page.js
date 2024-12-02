@@ -45,7 +45,7 @@ function deHTML(t) {
 }
 
 function getUsernameHTML(msg) {
-    return msg.author.display_name ? `${deHTML(msg.author.display_name)} (<code>${deHTML(msg.author.username)}</code>)`: deHTML(r.author.username)
+    return msg.author.display_name ? `${deHTML(msg.author.display_name)} (<code>@${deHTML(msg.author.username)}</code>)`: deHTML(r.author.username)
 }
 
 export async function onload() {
