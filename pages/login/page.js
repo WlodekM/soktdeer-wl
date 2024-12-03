@@ -5,9 +5,9 @@ async function fetchJSON(url, opts) {
 
 export function onload() {
     if (localStorage.hasOwnProperty('token') && typeof localStorage.getItem('token') == 'string') {
-        window.stores.sdlib.wsEvents.once('greet', () => {
+        window.stores.sdlib.wsEvents.once('greet', async () => {
             document.getElementById('topbar').classList.remove('hidden')
-            window.stores.sdlib.loginToken(localStorage.getItem('token'), localStorage.getItem('username'));
+            await window.stores.sdlib.loginToken(localStorage.getItem('token'), localStorage.getItem('username'));
             pages.goToPage('main')
         })
     }
