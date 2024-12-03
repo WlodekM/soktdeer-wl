@@ -12,7 +12,10 @@ A client for soktdeer
 
 ## TODO:
 
- - Adding attachments
- - PFPs
+ - ~~PFPs~~
  - Settings page
+
+## IN PROGRESS:
+
+ - Adding attachments
  - Token login & token saving
