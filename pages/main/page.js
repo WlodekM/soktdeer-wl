@@ -3,7 +3,60 @@ import html from "../../lib/htmlbuilder.js"
 import markdwonits from "https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/+esm"
 import { openPopup } from "../../lib/popups.js";
 
+// NOTE: do NOT use prettier, it fucks up the spacing for htmlbuilder
+
 window.html = html // debug
+
+let attachments = []
+
+async function addAttachmentFromUrl(url) {
+    const resp = await fetch(url);
+    if (!resp || !resp.ok) throw new Error("attachment invalid");
+    attachments.push({
+        type: resp.headers.get('content-type') ?? 'unknown',
+        blob: await resp.blob(),
+        url
+    })
+}
+
+function blobToDataURL(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(ev) {resolve(ev.target.result);}
+        reader.onerror = reject
+        reader.readAsDataURL(blob);
+    })
+}
+
+async function attachmentPreview(attachment) {
+    switch (attachment.type.split('/')[0]) {
+        case 'image':
+            return html('img').attr('src', await blobToDataURL(attachment.blob))
+    
+        default:
+            return html('span').txt('file')
+    }
+}
+
+// TODO: add catbox integration
+function addAttachment() {
+    const input = document.createElement('input');
+    input.type = 'file';
+
+    input.onchange = async e => {
+        const file = e.target.files[0]; 
+    
+        const reader = new FileReader();
+        reader.readAsText(file,'UTF-8');
+    
+        reader.onload = readerEvent => {
+            const content = readerEvent.target.result;
+
+        }
+    }
+
+    input.click();
+}
 
 const md = markdwonits({
     highlight: function (str, lang) {
@@ -51,6 +104,11 @@ function getUsernameHTML(msg) {
 export async function onload() {
     const msgArea = document.getElementById("messages");
 
+    document.getElementById("addAttachment").onclick = async () => {
+        await addAttachmentFromUrl(prompt('Attachment Url'));
+        updateAttachmentUI()
+    }
+
     handleNewPost = function handleNewPost(post) {
         console.debug('posting of the poster', post)
         let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
@@ -83,6 +141,45 @@ export async function onload() {
             document.getElementById('repliesContainer').firstChild.remove()
         document.getElementById('repliesContainer').prepend(elem);
 		if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
+    }
+
+    async function updateAttachmentUI() {
+        if(attachments.length >= 3) {
+            document.getElementById("addAttachment").setAttribute('disabled', true)
+        } else {
+            document.getElementById("addAttachment").removeAttribute('disabled')
+        }
+        let scrolledToBottom = msgArea.parentElement.scrollTopMax == msgArea.parentElement.scrollTop;
+        const previews = [];
+        for (const attachment of attachments) {
+            previews.push(await attachmentPreview(attachment))
+        }
+        const elem = html('div')
+            .class('attachments')
+            .for(attachments, (attachment, i) => {
+                let elem = html('div')
+                    .class('attachment')
+                    .child('div')
+                        .class('attachment-header')
+                            .child('span')
+                                .txt(attachment.url.split('/')[attachment.url.split('/').length - 1])
+                                .up()
+                            .child('button')
+                                .class('remove-attachment')
+                                .txt('X')
+                                .ev('click', e => {
+                                    attachments.splice(i, 1);
+                                    updateAttachmentUI();
+                                })
+                                .up()
+                        .up();
+                elem.appendChild(previews[i]);
+                return elem
+            });
+        if(document.getElementById('attachmentsContainer').firstChild)
+            document.getElementById('attachmentsContainer').firstChild.remove()
+        document.getElementById('attachmentsContainer').prepend(elem);
+        if(scrolledToBottom) scrollToBottomOfElement(msgArea.parentElement);
     }
 
     async function createMessage(msg) {
@@ -174,7 +271,7 @@ export async function onload() {
             command: "post",
             content: msg,
             replies: replies.map(p => p.id),
-            attachments: []
+            attachments: attachments.map(a => a.url)
         }))
         replies = [];
         rednerReplyThingy()

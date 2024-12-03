@@ -78,6 +78,23 @@ body {
 	}
 }
 
+.attachments {
+	display: flex;
+	.attachment {
+		max-height: 25em;
+		max-width: 20em;
+		border: 2px black ridge;
+		background: white;
+		.attachment-header {
+			display: flex;
+			justify-content: space-between;
+		}
+		img {
+			max-width: 100%;
+		}
+	}
+}
+
 #messageInput {
 	flex-grow: 1;
 }
