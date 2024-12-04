@@ -22,7 +22,7 @@
         <div>
             <button onclick="window.pages.goToPage('main')">home</button>
             <button onclick="window.pages.goToPage('settings')" disabled>settings</button>
-            <button onclick="throw new Error('A')" disabled>log out</button>
+            <button onclick="localStorage.clear();location.reload()">log out</button>
         </div>
     </div>
     <div class="main">
