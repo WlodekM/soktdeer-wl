@@ -2,6 +2,7 @@ import { shiftHeld } from "../../lib/key.js"
 import html from "../../lib/htmlbuilder.js"
 import markdwonits from "https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/+esm"
 import { openPopup } from "../../lib/popups.js";
+import addAttachmentCB from "../../lib/catbox.js"
 
 // NOTE: do NOT use prettier, it fucks up the spacing for htmlbuilder
 
@@ -40,22 +41,42 @@ async function attachmentPreview(attachment) {
 
 // TODO: add catbox integration
 function addAttachment() {
-    const input = document.createElement('input');
-    input.type = 'file';
-
-    input.onchange = async e => {
-        const file = e.target.files[0]; 
+    return new Promise((resolve, reject) => {
+        const input = document.createElement('input');
+        input.type = 'file';
     
-        const reader = new FileReader();
-        reader.readAsText(file,'UTF-8');
-    
-        reader.onload = readerEvent => {
-            const content = readerEvent.target.result;
-
+        input.onchange = async e => {
+            const file = e.target.files[0]; 
+        
+            const reader = new FileReader();
+            reader.readAsText(file,'UTF-8');
+        
+            reader.onload = async readerEvent => {
+                try {
+                    let content = readerEvent.target.result;
+                    if(typeof content == 'string') {
+                        const te = new TextEncoder();
+                        content = te.encode(te)
+                    }
+                    /** @type {Blob} */
+                    const blob = new Blob([content])
+                    const uri = await addAttachmentCB(blob, localStorage.getItem('cb-key'));
+                    console.debug(blob.type)
+                    attachments.push({
+                        type: blob.type ?? 'unknown',
+                        blob,
+                        url: uri
+                    });
+                    resolve(uri)
+                } catch (error) {
+                    console.error(error);
+                    reject(error)
+                }
+            }
         }
-    }
-
-    input.click();
+    
+        input.click();
+    })
 }
 
 const md = markdwonits({
@@ -106,6 +127,15 @@ export async function onload() {
 
     document.getElementById("addAttachment").onclick = async () => {
         await addAttachmentFromUrl(prompt('Attachment Url'));
+        updateAttachmentUI()
+    }
+
+    document.getElementById("addAttachmentCB").onclick = async () => {
+        try {
+            await addAttachment();
+        } catch (error) {
+            alert(error)
+        }
         updateAttachmentUI()
     }
 
