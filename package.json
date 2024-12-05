@@ -1,0 +1,15 @@
+{
+	"name": "soktdeer-wl",
+	"displayName": "SoktDeer WL",
+	"description": "A client for soktdeer (bossdeer)",
+	"author": {
+		"email": "wlodekm.work@gmail.com",
+		"name": "WlodekM",
+		"url": "https://wlodekm.nekoweb.org"
+	},
+	"type": "module",
+	"devDependencies": {
+		"webpack": "^5.97.0",
+		"webpack-cli": "^5.1.4"
+	}
+}
